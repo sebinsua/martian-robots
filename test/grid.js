@@ -12,6 +12,18 @@ describe('Grid', function () {
     expect(grid.height).to.equal(5);
   });
 
+  it('should not be larger than 50 wide or 50 tall', function () {
+    expect(function () {
+      var grid = new Grid(51, 10);
+    }).to.throw();
+    expect(function () {
+      var grid = new Grid(10, 51);
+    }).to.throw();
+    expect(function () {
+      var grid = new Grid(50, 50);
+    }).to.not.throw();
+  });
+
   it('should be able to deposit a scent where the robot gets lost', function () {
     var grid = new Grid(50, 50);
 

@@ -3,54 +3,28 @@ var Robot = require('./robot'),
 
 var RobotPrograms = (function() {
 
-  // @todo: Ask yourself: are the constraints in the right place?
-
-  var MAX_GRID_HEIGHT = 50, MAX_GRID_WIDTH = 50;
-
   var RobotPrograms = function (fileBlob) {
     this.lines = fileBlob.split('\n') || [];
     if (this.lines.length === 0) {
       throw new Error("No lines passed into the robot program");
     }
 
-    var firstLine = this.lines.shift(),
-        coordinates = firstLine.split(' '),
-        x = parseInt(coordinates[0]), y = parseInt(coordinates[1]);
-    this.createGrid(x, y);
+    var firstLine = this.lines.shift();
+    this.createGrid(firstLine);
   };
 
-  RobotPrograms.prototype.createGrid = function (x, y) {
+  RobotPrograms.prototype.createGrid = function (firstLine) {
+    var _coordinates = firstLine.split(' '),
+        x = parseInt(_coordinates[0]), y = parseInt(_coordinates[1]);
+
     if (isNaN(x) || isNaN(y)) {
       throw new Error("First line did not contain numbers");
     }
 
-    if (x > MAX_GRID_WIDTH || x < 0) {
-      throw new Error("Grid too wide: " + x);
-    }
-    if (y > MAX_GRID_HEIGHT || y < 0) {
-      throw new Error("Grid too tall: " + y);
-    }
     this.grid = new Grid(x, y);
   };
 
-  RobotPrograms.prototype.run = function () {
-    var robot, instructions = '';
-    while (this.lines.length !== 0) {
-      robot = this.createRobot();
-
-      instructions = this.getRobotInstructions();
-
-      robot.actOnInstructions(instructions);
-
-      this.printRobotFinishingPosition(robot);
-
-      this.lines.shift(); // Get rid of an empty new line (if it exists...)
-    }
-  };
-
-  RobotPrograms.prototype.createRobot = function () {
-    var createRobotLine = this.lines.shift();
-
+  RobotPrograms.prototype.createRobot = function (createRobotLine) {
     var _position = createRobotLine.split(' '),
         x = parseInt(_position[0]),
         y = parseInt(_position[1]),
@@ -60,8 +34,23 @@ var RobotPrograms = (function() {
     return robot;
   };
 
-  RobotPrograms.prototype.getRobotInstructions = function() {
-    var line = this.lines.shift();
+  RobotPrograms.prototype.run = function () {
+    var robot, instructions = '';
+    while (this.lines.length !== 0) {
+      var createRobotLine = this.lines.shift();
+      robot = this.createRobot(createRobotLine);
+
+      var robotInstructionsLine = this.lines.shift();
+      instructions = this.getRobotInstructions(robotInstructionsLine);
+
+      robot.actOnInstructions(instructions);
+      this.printRobotFinishingPosition(robot);
+
+      this.lines.shift(); // Get rid of an empty new line (if it exists...)
+    }
+  };
+
+  RobotPrograms.prototype.getRobotInstructions = function(line) {
     if (line.length > 100) {
       throw new Error("Instructions too long: " + line.length + " > 100");
     }

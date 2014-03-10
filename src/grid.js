@@ -1,5 +1,15 @@
 var Grid = (function () {
+
+  var MAX_GRID_HEIGHT = 50, MAX_GRID_WIDTH = 50;
+
   var Grid = function (x, y) {
+    if (x > MAX_GRID_WIDTH || x < 0) {
+      throw new Error("Grid too wide: " + x);
+    }
+    if (y > MAX_GRID_HEIGHT || y < 0) {
+      throw new Error("Grid too tall: " + y);
+    }
+
     this.width = x || 0;
     this.height = y || 0;
 

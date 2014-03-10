@@ -1,0 +1,22 @@
+{
+  "name": "martian-robots",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sebinsua/martian-robots.git"
+  },
+  "author": "Seb Insua",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/sebinsua/martian-robots/issues"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*"
+  }
+}

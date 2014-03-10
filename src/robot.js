@@ -45,13 +45,11 @@ var Robot = (function() {
   };
 
   Robot.prototype.moveForward = function () {
-    if (this.lost) {
+    if (this.lost || this.sniffForScent()) {
       return false;
     }
 
     var previousX = this.x, previousY = this.y;
-
-    // @todo: Add some check to sniff here.
     switch (this.currentOrientation) {
       default:
       case 'N':
@@ -108,6 +106,10 @@ var Robot = (function() {
 
   Robot.prototype.isOffGrid = function () {
     return this.grid.isMovementForwardsPossible(this.x, this.y, this.currentOrientation);
+  };
+
+  Robot.prototype.sniffForScent = function () {
+    return this.grid.isLostHere(this.x, this.y, this.currentOrientation);
   };
 
   Robot.prototype.exclaim = function () {

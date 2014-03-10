@@ -73,6 +73,7 @@ describe('Robot', function () {
     robot.moveForwards();
     robot.moveForwards();
     robot.moveForwards();
+    robot.moveForwards();
     expect(robot.lost).to.be.false;
     robot.moveForwards();
     expect(robot.lost).to.be.true;
@@ -95,7 +96,8 @@ describe('Robot', function () {
     robotA.moveForwards();
     robotA.moveForwards();
     robotA.moveForwards();
-    expect(robotA.y).to.equal(4);
+    robotA.moveForwards();
+    expect(robotA.y).to.equal(5);
     expect(robotA.lost).to.be.false;
     robotA.moveForwards();
     expect(robotA.y).to.equal(5);
@@ -107,10 +109,11 @@ describe('Robot', function () {
     robotB.moveForwards();
     robotB.moveForwards();
     robotB.moveForwards();
-    expect(robotB.y).to.equal(4);
+    robotB.moveForwards();
+    expect(robotB.y).to.equal(5);
     expect(robotB.lost).to.be.false;
     robotB.moveForwards();
-    expect(robotB.y).to.equal(4);
+    expect(robotB.y).to.equal(5);
     expect(robotB.lost).to.be.false;
 
     // Robot B never gets lost, it smells trouble.

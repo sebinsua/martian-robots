@@ -1,5 +1,7 @@
 var Robot = (function() {
 
+  var VALID_ORIENTATIONS = ['N', 'S', 'W', 'E'];
+
   function Robot (grid, x, y, orientation) {
     if (grid == null) {
       throw new Error("No grid given to the robot");
@@ -7,9 +9,23 @@ var Robot = (function() {
 
     this.grid = grid;
 
-    this.x = x || 0;
-    this.y = y || 0;
-    this.currentOrientation = orientation || 'N';
+    x = x || 0;
+    if (x < 0 || x > this.grid.width) {
+      throw new Error("x argument " + x + " outside grid");
+    }
+    this.x = x;
+
+    y = y || 0;
+    if (y < 0 || y > this.grid.height) {
+      throw new Error("y argument " + y + " outside grid");
+    }
+    this.y = y;
+
+    orientation = orientation || 'N';
+    if (VALID_ORIENTATIONS.indexOf(orientation) === -1) {
+      throw new Error("orientation argument " + orientation + " is invalid");
+    }
+    this.currentOrientation = orientation;
 
     this.lost = false;
   }
@@ -46,7 +62,12 @@ var Robot = (function() {
       return false;
     }
 
-    var previousX = this.x, previousY = this.y;
+    if (this.isOffGrid()) {
+      this.grid.addLostScent(this.x, this.y, this.currentOrientation);
+      this.lost = true;
+      return false;
+    }
+
     switch (this.currentOrientation) {
       default:
       case 'N':
@@ -61,11 +82,6 @@ var Robot = (function() {
       case 'W':
         this.x--;
         break;
-    }
-
-    if (this.isOffGrid()) {
-      this.grid.addLostScent(previousX, previousY, this.currentOrientation);
-      this.lost = true;
     }
 
     return true;

@@ -19,7 +19,7 @@ var Robot = (function() {
       throw new Error('Empty instructions string');
     }
 
-    while (!this.lost) {
+    while (!this.lost && instructionsLine.length !== 0) {
       var instruction = instructionsLine.charAt(0);
 
       this.actOnInstruction(instruction);
@@ -31,20 +31,17 @@ var Robot = (function() {
   Robot.prototype.actOnInstruction = function (instruction) {
     switch (instruction) {
       case 'F':
-        this.moveForward();
-        break;
+        return this.moveForwards();
       case 'R':
-        this.turnRight();
-        break;
+        return this.turnRight();
       case 'L':
-        this.turnLeft();
-        break;
+        return this.turnLeft();
       default:
         throw new Error("Invalid instruction " + instruction);
     }
   };
 
-  Robot.prototype.moveForward = function () {
+  Robot.prototype.moveForwards = function () {
     if (this.lost || this.sniffForScent()) {
       return false;
     }
@@ -105,7 +102,7 @@ var Robot = (function() {
   };
 
   Robot.prototype.isOffGrid = function () {
-    return this.grid.isMovementForwardsPossible(this.x, this.y, this.currentOrientation);
+    return !this.grid.isMovementForwardsPossible(this.x, this.y, this.currentOrientation);
   };
 
   Robot.prototype.sniffForScent = function () {

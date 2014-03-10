@@ -12,6 +12,10 @@ describe('Grid', function () {
     expect(grid.height).to.equal(5);
   });
 
+  it('should reject co-ordinates which are greater than 50', function () {
+    // The maximum value for any coordinate is 50.
+  });
+
   it('should be able to deposit a scent where the robot gets lost', function () {
     var grid = new Grid(50, 50);
 
@@ -30,4 +34,5 @@ describe('Grid', function () {
     expect(grid.isLostHere(50, 50, 'N')).to.be.true;
     expect(grid.isLostHere(50, 50, 'E')).to.be.false;
   });
+
 });
